@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { MoveRight } from "lucide-react";
+
 import TripForm from "../components/TripForm";
+import SearchBar from "../components/SearchBar";
+import TripList from "../components/TripList";
 
 function App() {
   const [trips, setTrips] = useState([]);
+  const [search, setSearch] = useState("");
 
   const loadTrips = () => {
     axios
@@ -21,45 +24,32 @@ function App() {
     loadTrips();
   }, []);
 
+  const filteredTrips = trips.filter((trip) =>
+    `${trip.departure_city} ${trip.destination_city}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
   return (
-    <div style={{ padding: "20px" }}>
+    <div
+      style={{
+        padding: "20px",
+        maxWidth: "900px",
+        margin: "0 auto",
+      }}
+    >
       <h1>Сервис поиска попутчиков</h1>
 
       <TripForm onTripAdded={loadTrips} />
 
       <hr />
 
-      <h2>Список поездок</h2>
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+      />
 
-      {trips.map((trip) => (
-        <div
-          key={trip.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "8px",
-          }}
-        >
-          <h3
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-            }}
-          >
-            {trip.departure_city}
-            <MoveRight size={18} />
-            {trip.destination_city}
-          </h3>
-
-          <p>Дата: {trip.trip_date}</p>
-
-          {trip.description && (
-            <p>{trip.description}</p>
-          )}
-        </div>
-      ))}
+      <TripList trips={filteredTrips} />
     </div>
   );
 }

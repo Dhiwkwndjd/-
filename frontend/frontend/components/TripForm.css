@@ -1,0 +1,22 @@
+.trip-form {
+  margin-bottom: 20px;
+}
+
+.trip-input,
+.trip-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.trip-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.trip-button {
+  padding: 10px 15px;
+  cursor: pointer;
+}

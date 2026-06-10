@@ -1,0 +1,12 @@
+.trip-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.trip-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
