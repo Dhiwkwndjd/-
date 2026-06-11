@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders',
     'core',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -125,6 +127,7 @@ STATIC_URL = 'static/'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+AUTH_USER_MODEL = 'users.CustomerUser'
 
 
 load_dotenv()

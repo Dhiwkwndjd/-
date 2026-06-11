@@ -1,9 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Trip(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     departure_city = models.CharField(max_length=100)
     destination_city = models.CharField(max_length=100)
     trip_date = models.DateField()
@@ -14,7 +15,8 @@ class Trip(models.Model):
 
 
 class DeliveryRequest(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     pickup_city = models.CharField(max_length=100)
     delivery_city = models.CharField(max_length=100)
     package_description = models.TextField()
