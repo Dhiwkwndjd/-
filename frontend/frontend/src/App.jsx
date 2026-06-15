@@ -1,56 +1,46 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
-import TripForm from "../components/TripForm";
-import SearchBar from "../components/SearchBar";
-import TripList from "../components/TripList";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import HomePage from "../pages/HomePage";
+
+import AuthLayout from "../pages/layouts/AuthLayout";
+import MainLayout from "../pages/layouts/MainLayout";
+
+import RequireAuth from "../pages/Require/RequireAuth";
 
 function App() {
-  const [trips, setTrips] = useState([]);
-  const [search, setSearch] = useState("");
-
-  const loadTrips = () => {
-    axios
-      .get("http://127.0.0.1:8000/api/trips/")
-      .then((response) => {
-        setTrips(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  useEffect(() => {
-    loadTrips();
-  }, []);
-
-  const filteredTrips = trips.filter((trip) =>
-    `${trip.departure_city} ${trip.destination_city}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
-
   return (
-    <div
-      style={{
-        padding: "20px",
-        maxWidth: "900px",
-        margin: "0 auto",
-      }}
-    >
-      <h1>Сервис поиска попутчиков</h1>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AuthLayout />}>
+          <Route
+            path="/login"
+            element={<LoginPage />}
+          />
 
-      <TripForm onTripAdded={loadTrips} />
+          <Route
+            path="/register"
+            element={<RegisterPage />}
+          />
+        </Route>
 
-      <hr />
-
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-      />
-
-      <TripList trips={filteredTrips} />
-    </div>
+        <Route element={<MainLayout />}>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <HomePage />
+              </RequireAuth>
+            }
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
