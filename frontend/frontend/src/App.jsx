@@ -7,6 +7,7 @@ import {
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
+import TripDetailPage from "../pages/TripDetailPage";
 
 import AuthLayout from "../pages/layouts/AuthLayout";
 import MainLayout from "../pages/layouts/MainLayout";
@@ -37,6 +38,10 @@ function App() {
                 <HomePage />
               </RequireAuth>
             }
+          />
+          <Route
+            path="/trip/:id"
+            element={<TripDetailPage />}
           />
         </Route>
       </Routes>

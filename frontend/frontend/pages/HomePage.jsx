@@ -16,7 +16,8 @@ function HomePage() {
         setTrips(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("STATUS:", error.response?.status);
+        console.log("DATA:", error.response?.data);
       });
   };
 
@@ -54,7 +55,10 @@ function HomePage() {
 
       <hr />
 
-      <TripList trips={filteredTrips} />
+      <TripList
+        trips={filteredTrips}
+        onTripDeleted={loadTrips}
+      />
     </div>
   );
 }

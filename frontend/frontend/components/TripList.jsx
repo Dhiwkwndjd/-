@@ -1,7 +1,29 @@
 import "./TripList.css";
 import { MoveRight } from "lucide-react";
+import axios from "axios";
 
-function TripList({ trips }) {
+function TripList({ trips, onTripDeleted }) {
+
+  const deleteTrip = async (id) => {
+    const token = localStorage.getItem("access");
+
+    try {
+      await axios.delete(
+        `http://127.0.0.1:8000/api/trips/${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      onTripDeleted();
+    } catch (error) {
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
+    }
+  };
+
   if (trips.length === 0) {
     return <p>Поездки не найдены</p>;
   }
@@ -22,11 +44,15 @@ function TripList({ trips }) {
             <strong>Дата:</strong> {trip.trip_date}
           </p>
 
-          {trip.description && (
-            <p>
-              <strong>Описание:</strong> {trip.description}
-            </p>
-          )}
+          <p>
+            <strong>Описание:</strong> {trip.description}
+          </p>
+
+          <button
+            onClick={() => deleteTrip(trip.id)}
+          >
+            Удалить
+          </button>
         </div>
       ))}
     </>

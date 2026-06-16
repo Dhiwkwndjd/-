@@ -2,20 +2,24 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated, AllowAny # <-- Импортируем AllowAny
 from .serializers import CustomerUserSerializer
 
 
 class UserApiView(APIView):
 
+    def get_permissions(self):
+        """
+        Динамически управляем правами доступа:
+        - Для GET (просмотр данных) нужна авторизация (IsAuthenticated).
+        - Для POST (регистрация) доступ открыт всем (AllowAny).
+        """
+        if self.request.method == 'POST':
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"message": "not auth"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
         serializer = CustomerUserSerializer(request.user)
-
         return Response(
             serializer.data,
             status=status.HTTP_200_OK
@@ -28,7 +32,6 @@ class UserApiView(APIView):
 
         if serializer.is_valid():
             user = serializer.save()
-
             token = RefreshToken.for_user(user)
 
             return Response(

@@ -8,8 +8,9 @@ function TripForm({ onTripAdded }) {
     destination_city: "",
     trip_date: "",
     description: "",
-    user: 1,
   });
+
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -18,43 +19,96 @@ function TripForm({ onTripAdded }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios
-      .post("http://127.0.0.1:8000/api/trips/", formData)
-      .then(() => {
-        setFormData({
-          departure_city: "",
-          destination_city: "",
-          trip_date: "",
-          description: "",
-          user: 1,
-        });
+    const token = localStorage.getItem("access");
 
-        onTripAdded();
-      })
-      .catch((error) => {
-        console.log(error);
+    console.log("TOKEN:", token);
+
+    if (!token) {
+      setError("Сначала войдите в аккаунт");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://127.0.0.1:8000/api/trips/",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setError("");
+
+      setFormData({
+        departure_city: "",
+        destination_city: "",
+        trip_date: "",
+        description: "",
       });
+
+      onTripAdded();
+    } catch (err) {
+      console.log(err.response?.data);
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
+      setError(
+        JSON.stringify(err.response?.data) ||
+          "Ошибка создания поездки"
+      );
+      
+    }
   };
 
   return (
     <form className="trip-form" onSubmit={handleSubmit}>
-      <input type="text" name="departure_city" placeholder="Город отправления" value={formData.departure_city} onChange={handleChange}/>
+      <h2>Добавить поездку</h2>
+
+      {error && <p>{error}</p>}
+
+      <input
+        type="text"
+        name="departure_city"
+        placeholder="Город отправления"
+        value={formData.departure_city}
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <input className="trip-input"  type="text" name="destination_city" placeholder="Город назначения" value={formData.destination_city} onChange={handleChange}/>
+      <input
+        type="text"
+        name="destination_city"
+        placeholder="Город назначения"
+        value={formData.destination_city}
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <input className="trip-input"  type="date" name="trip_date" value={formData.trip_date} onChange={handleChange}/>
+      <input
+        type="date"
+        name="trip_date"
+        value={formData.trip_date}
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <textarea className="trip-textarea" name="description" placeholder="Описание" value={formData.description} onChange={handleChange} />
+      <textarea
+        name="description"
+        placeholder="Описание"
+        value={formData.description}
+        onChange={handleChange}
+      />
 
       <br /><br />
 
-      <button type="submit" className="trip-button">
+      <button type="submit">
         Добавить поездку
       </button>
     </form>

@@ -11,7 +11,7 @@ class Trip(models.Model):
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.departure_city} → {self.destination_city}"
+        return f"{self.departure_city} -> {self.destination_city}"
 
 
 class DeliveryRequest(models.Model):
@@ -23,4 +23,4 @@ class DeliveryRequest(models.Model):
     delivery_date = models.DateField()
 
     def __str__(self):
-        return f"{self.pickup_city} → {self.delivery_city}"
+        return f"{self.pickup_city} -> {self.delivery_city}"

@@ -32,7 +32,8 @@ function RegisterForm() {
         alert("Регистрация успешна");
       })
       .catch((error) => {
-        console.log(error.response?.data);
+        console.log("STATUS:", error.response?.status);
+        console.log("DATA:", error.response?.data);
       });
   };
 
