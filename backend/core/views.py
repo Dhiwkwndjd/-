@@ -35,6 +35,14 @@ class TripApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class MyTripsApiView(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self, request):
+        serializer=TripSerializer(Trip.objects.filter(user=request.user), many=True)
+        return Response(serializer.data)
+
+
+
 class DeliveryRequestApiView(APIView):
 
     def get(self, request):
