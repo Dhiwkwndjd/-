@@ -83,13 +83,8 @@ class TripDetailApiView(APIView):
         )
     
     def get(self, request, pk):
-        trip = get_object_or_404(
-            Trip,
-            pk=pk
-        )
-
+        trip = get_object_or_404(Trip, pk=pk)
         serializer = TripSerializer(trip)
-
         return Response(serializer.data)
 
     def delete(self, request, pk):

@@ -54,8 +54,6 @@ function TripForm({ onTripAdded }) {
       onTripAdded();
     } catch (err) {
       console.log(err.response?.data);
-      console.log("STATUS:", error.response?.status);
-      console.log("DATA:", error.response?.data);
       setError(
         JSON.stringify(err.response?.data) ||
           "Ошибка создания поездки"

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { MoveRight } from "lucide-react";
 
 function TripDetailPage() {
   const { id } = useParams();
@@ -16,7 +17,7 @@ function TripDetailPage() {
 
   return (
     <div>
-      <h2>{trip.departure_city} → {trip.destination_city}</h2>
+      <h2>{trip.departure_city} <MoveRight/> {trip.destination_city}</h2>
       <p>Дата: {trip.trip_date}</p>
       <p>{trip.description}</p>
     </div>

@@ -1,0 +1,29 @@
+.profile-page {
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.profile-title {
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.profile-info {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+.profile-trips {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}

@@ -1,12 +1,51 @@
+.trip-list-title {
+  margin-bottom: 20px;
+}
+
 .trip-card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
 }
 
 .trip-route {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #1e293b;
+}
+
+.trip-info {
+  margin-bottom: 10px;
+  color: #475569;
+}
+
+.trip-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.trip-details-btn {
+  background: #2563eb;
+}
+
+.trip-edit-btn {
+  background: #f59e0b;
+}
+
+.trip-delete-btn {
+  background: #dc2626;
+}
+
+.trip-actions button {
+  border: none;
+  padding: 10px 16px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
 }

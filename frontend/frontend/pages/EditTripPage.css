@@ -1,16 +1,17 @@
-.trip-form {
+.edit-trip-page {
+  max-width: 700px;
+  margin: 40px auto;
   background: white;
-  padding: 25px;
+  padding: 30px;
   border-radius: 16px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
 }
 
-.trip-form-title {
+.edit-title {
   margin-bottom: 20px;
 }
 
-.trip-input {
+.edit-input {
   width: 100%;
   padding: 14px;
   margin-bottom: 15px;
@@ -18,16 +19,15 @@
   border: 1px solid #cbd5e1;
 }
 
-.trip-textarea {
+.edit-textarea {
   width: 100%;
-  min-height: 140px;
+  min-height: 150px;
   padding: 14px;
-  resize: vertical;
   border-radius: 10px;
   border: 1px solid #cbd5e1;
 }
 
-.trip-button {
+.edit-button {
   margin-top: 15px;
   padding: 12px 20px;
   background: #16a34a;

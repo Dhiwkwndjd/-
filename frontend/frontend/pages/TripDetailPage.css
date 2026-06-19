@@ -1,0 +1,23 @@
+.trip-detail-page {
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+.trip-detail-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
+}
+
+.trip-detail-route {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.trip-detail-info {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #475569;
+}

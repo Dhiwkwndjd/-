@@ -4,6 +4,7 @@ import axios from "axios";
 import TripForm from "../components/TripForm";
 import SearchBar from "../components/SearchBar";
 import TripList from "../components/TripList";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [trips, setTrips] = useState([]);
@@ -43,6 +44,12 @@ function HomePage() {
       <button onClick={logout}>
         Выйти
       </button>
+
+      <div style={{ marginBottom: "20px" }}>
+        <Link to="/profile">
+          <button>Личный кабинет</button>
+        </Link>
+</div>
 
       <TripForm onTripAdded={loadTrips} />
 
