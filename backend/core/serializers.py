@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Trip, DeliveryRequest
+from .models import Trip, DeliveryRequest, Booking
 
 
 class TripSerializer(serializers.ModelSerializer):
@@ -14,4 +14,10 @@ class DeliveryRequestSerializer(serializers.ModelSerializer):
         model = DeliveryRequest
         fields = '__all__'
 
+        read_only_fields = ['user']
+
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = '__all__'
         read_only_fields = ['user']

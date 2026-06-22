@@ -46,6 +46,7 @@ function HomePage() {
       </button>
 
       <div style={{ marginBottom: "20px" }}>
+        <Link to="/applications"><button>Мои заявки</button></Link>
         <Link to="/profile">
           <button>Личный кабинет</button>
         </Link>

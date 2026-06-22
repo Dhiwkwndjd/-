@@ -1,5 +1,5 @@
-from .models import Trip, DeliveryRequest
-from .serializers import TripSerializer, DeliveryRequestSerializer
+from .models import Trip, DeliveryRequest,  Booking
+from .serializers import TripSerializer, DeliveryRequestSerializer, BookingSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,90 +7,69 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
 class TripApiView(APIView):
-
     def get(self, request):
-        trips = Trip.objects.all()
-        serializer = TripSerializer(trips, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(TripSerializer(Trip.objects.all(), many=True).data)
 
     def post(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"message": "Необходимо войти в систему"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-        print(request.user)
-        print(request.user.is_authenticated)
-
-        serializer = TripSerializer(
-        data=request.data
-    )
-
         serializer = TripSerializer(data=request.data)
-
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 
 class MyTripsApiView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self, request):
-        serializer=TripSerializer(Trip.objects.filter(user=request.user), many=True)
-        return Response(serializer.data)
+        return Response(TripSerializer(Trip.objects.filter(user=request.user), many=True).data)
 
+
+class MyBookingsApiView(APIView):
+    permission_classes=[IsAuthenticated]
+    def get(self, request):
+        return Response(BookingSerializer(Booking.objects.filter(user=request.user), many=True).data)
+
+
+class BookingApiView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self, request):
+        trip = get_object_or_404(Trip, id=request.data.get("trip_id"))
+
+        if trip.free_seats <= 0:
+            return Response({"error": "Нет свободных мест"}, status=400)
+
+        booking = Booking.objects.create(user=request.user, trip=trip, seats=1)
+        trip.free_seats -= 1
+        trip.save()
+
+        return Response(BookingSerializer(booking).data, status=201)
 
 
 class DeliveryRequestApiView(APIView):
-
     def get(self, request):
-        requests = DeliveryRequest.objects.all()
-        serializer = DeliveryRequestSerializer(requests, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
+        return Response(DeliveryRequestSerializer(DeliveryRequest.objects.all(), many=True).data)
+
     def post(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"message": "Необходимо войти в систему"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
         serializer = DeliveryRequestSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 
 class TripDetailApiView(APIView):
+    def get(self, request, pk):
+        return Response(TripSerializer(get_object_or_404(Trip, pk=pk)).data)
 
     def put(self, request, pk):
-        trip = get_object_or_404(Trip, pk=pk)
-        serializer = TripSerializer(
-            trip,
-            data=request.data
-        )
-
+        trip=get_object_or_404(Trip,pk=pk)
+        serializer=TripSerializer(trip,data=request.data)
         if serializer.is_valid():
             serializer.save()
-
             return Response(serializer.data)
-
-        return Response(
-            serializer.errors,
-            status=400
-        )
-    
-    def get(self, request, pk):
-        trip = get_object_or_404(Trip, pk=pk)
-        serializer = TripSerializer(trip)
-        return Response(serializer.data)
+        return Response(serializer.errors,status=400)
 
     def delete(self, request, pk):
-        trip = get_object_or_404(
-            Trip,
-            pk=pk
-        )
-        trip.delete()
+        get_object_or_404(Trip,pk=pk).delete()
         return Response(status=204)

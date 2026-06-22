@@ -8,6 +8,7 @@ import EditTripPage from '../pages/EditTripPage';
 import AuthLayout from '../pages/layouts/AuthLayout';
 import MainLayout from '../pages/layouts/MainLayout';
 import RequireAuth from '../pages/Require/RequireAuth';
+import MyApplicationsPage from '../pages/MyApplicationsPage';
 
   function App(){
     return (
@@ -17,6 +18,7 @@ import RequireAuth from '../pages/Require/RequireAuth';
             <Route element={<MainLayout/>}>
             <Route path='/' element={<RequireAuth><HomePage/></RequireAuth>}/>
             <Route path='/profile' element={<RequireAuth><ProfilePage/></RequireAuth>}/>
+            <Route path='/applications' element={<RequireAuth><MyApplicationsPage/></RequireAuth>}/>
             <Route path='/trip/:id' element={<RequireAuth><TripDetailPage/></RequireAuth>}/>
             <Route path='/trip/edit/:id' element={<RequireAuth><EditTripPage/></RequireAuth>}/></Route>
           </Routes>
