@@ -7,3 +7,6 @@ class CustomerUser(AbstractUser):
         blank=True,
         null=True
     )
+
+    ROLE_CHOICES = [("driver", "Водитель"), ("passenger", "Пассажир")]
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="passenger")

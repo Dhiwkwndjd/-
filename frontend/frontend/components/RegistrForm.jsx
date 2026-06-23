@@ -9,6 +9,7 @@ function RegisterForm() {
     phone_number: "",
     password: "",
     password_2: "",
+    role: "passenger",
   });
 
   const handleChange = (e) => {
@@ -29,6 +30,7 @@ function RegisterForm() {
       .then((response) => {
         localStorage.setItem("access", response.data.access);
         localStorage.setItem("refresh", response.data.refresh);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         alert("Регистрация успешна");
       })
       .catch((error) => {
@@ -45,6 +47,8 @@ function RegisterForm() {
       <input type="email" name="email" placeholder="Email" onChange={handleChange}/>
 
       <input type="text" name="phone_number" placeholder="Телефон" onChange={handleChange}/>
+
+      <select name="role" onChange={handleChange}><option value="passenger">Пассажир</option><option value="driver">Водитель</option></select>
 
       <input type="password" name="password" placeholder="Пароль" onChange={handleChange}/>
 

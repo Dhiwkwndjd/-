@@ -11,6 +11,8 @@ class TripApiView(APIView):
         return Response(TripSerializer(Trip.objects.all(), many=True).data)
 
     def post(self, request):
+        if request.user.role != "driver":
+            return Response({"error": "Только водитель может создавать поездки"}, status=403)
         serializer = TripSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
@@ -64,6 +66,8 @@ class TripDetailApiView(APIView):
 
     def put(self, request, pk):
         trip=get_object_or_404(Trip,pk=pk)
+        if trip.user != request.user or request.user.role != "driver":
+            return Response({"error":"Нет доступа"}, status=403)
         serializer=TripSerializer(trip,data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -71,5 +75,8 @@ class TripDetailApiView(APIView):
         return Response(serializer.errors,status=400)
 
     def delete(self, request, pk):
-        get_object_or_404(Trip,pk=pk).delete()
+        trip=get_object_or_404(Trip,pk=pk)
+        if trip.user != request.user or request.user.role != "driver":
+            return Response({"error":"Нет доступа"}, status=403)
+        trip.delete()
         return Response(status=204)

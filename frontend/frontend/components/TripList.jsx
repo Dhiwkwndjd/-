@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 function TripList({ trips, loadTrips }) {
+  const current = JSON.parse(localStorage.getItem("user") || "{}");  
+  const role = current?.role;
   if (trips.length === 0) {
     return <p>Поездки не найдены</p>;
   }
@@ -42,8 +44,9 @@ function TripList({ trips, loadTrips }) {
             <span>{trip.destination_city}</span>
           </h3>
 
+          <p><strong>Водитель:</strong> {trip.owner}</p>
           <p>
-            <strong>Дата:</strong>{" "}
+            <strong>Дата и время:</strong>{" "}
             {trip.trip_date}
           </p>
 
@@ -67,24 +70,12 @@ function TripList({ trips, loadTrips }) {
               </button>
             </Link>
 
-            <Link
-              to={`/trip/edit/${trip.id}/`}
-              onClick={() =>
-                saveTripToStorage(trip)
-              }
-            >
-              <button>
-                Изменить
-              </button>
+            {role === "driver" && current.username === trip.owner && <>
+            <Link to={`/trip/edit/${trip.id}/`} onClick={() => saveTripToStorage(trip)}>
+              <button>Изменить</button>
             </Link>
-
-            <button
-              onClick={() =>
-                deleteTrip(trip.id)
-              }
-            >
-              Удалить
-            </button>
+            <button onClick={() => deleteTrip(trip.id)}>Удалить</button>
+            </>}
           </div>
         </div>
       ))}

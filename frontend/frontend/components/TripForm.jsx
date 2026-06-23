@@ -8,6 +8,8 @@ function TripForm({ onTripAdded }) {
     destination_city: "",
     trip_date: "",
     description: "",
+    total_seats: 3,
+    free_seats: 3,
   });
 
   const [error, setError] = useState("");
@@ -49,6 +51,8 @@ function TripForm({ onTripAdded }) {
         destination_city: "",
         trip_date: "",
         description: "",
+    total_seats: 3,
+    free_seats: 3,
       });
 
       onTripAdded();
@@ -95,6 +99,9 @@ function TripForm({ onTripAdded }) {
         onChange={handleChange}
       />
 
+      <br /><br />
+
+      <input type="number" name="total_seats" placeholder="Количество мест" value={formData.total_seats} onChange={handleChange}/>
       <br /><br />
 
       <textarea

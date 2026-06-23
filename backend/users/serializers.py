@@ -12,6 +12,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
             "username",
             "email",
             "phone_number",
+            "role",
             "password",
             "password_2"
         ]

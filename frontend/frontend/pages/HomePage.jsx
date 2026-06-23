@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 function HomePage() {
   const [trips, setTrips] = useState([]);
   const [search, setSearch] = useState("");
+  const role = JSON.parse(localStorage.getItem("user") || "{}").role;
 
   const loadTrips = () => {
     axios
@@ -32,27 +33,20 @@ function HomePage() {
       .includes(search.toLowerCase())
   );
 
-  const logout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-
-    window.location.href = "/login";
-  };
+  
 
   return (
     <div>
-      <button onClick={logout}>
-        Выйти
-      </button>
+      
 
       <div style={{ marginBottom: "20px" }}>
         <Link to="/applications"><button>Мои заявки</button></Link>
         <Link to="/profile">
           <button>Личный кабинет</button>
         </Link>
-</div>
+      </div>
 
-      <TripForm onTripAdded={loadTrips} />
+      {role === "driver" && <TripForm onTripAdded={loadTrips} />}
 
       <hr />
 
