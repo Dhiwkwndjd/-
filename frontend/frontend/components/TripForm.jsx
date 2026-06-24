@@ -3,14 +3,17 @@ import axios from "axios";
 import "./TripForm.css";
 
 function TripForm({ onTripAdded }) {
-  const [formData, setFormData] = useState({
-    departure_city: "",
-    destination_city: "",
-    trip_date: "",
-    description: "",
-    total_seats: 3,
-    free_seats: 3,
-  });
+  const [formData, setFormData] =
+    useState({
+      departure_city:"",
+      destination_city:"",
+      trip_date:"",
+      trip_time:"",
+      price:"",
+      total_seats:3,
+      free_seats:3,
+      description:"",
+});
 
   const [error, setError] = useState("");
 
@@ -33,10 +36,16 @@ function TripForm({ onTripAdded }) {
       return;
     }
 
+    const dataToSend = {
+      ...formData,
+      free_seats: formData.total_seats,
+    };
+
     try {
       await axios.post(
         "http://127.0.0.1:8000/api/trips/",
-        formData,
+        
+        dataToSend,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,8 +60,8 @@ function TripForm({ onTripAdded }) {
         destination_city: "",
         trip_date: "",
         description: "",
-    total_seats: 3,
-    free_seats: 3,
+        total_seats: 3,
+        free_seats: 3,
       });
 
       onTripAdded();
@@ -101,7 +110,34 @@ function TripForm({ onTripAdded }) {
 
       <br /><br />
 
-      <input type="number" name="total_seats" placeholder="Количество мест" value={formData.total_seats} onChange={handleChange}/>
+      <input
+        type="time"
+        name="trip_time"
+        value={formData.trip_time}
+        onChange={handleChange}
+      />
+
+      <br /><br />
+
+      <input
+        type="number"
+        step="0.01"
+        name="price"
+        placeholder="Цена"
+        value={formData.price}
+        onChange={handleChange}
+      />
+
+      <br /><br />
+
+      <input 
+        type="number" 
+        name="total_seats" 
+        placeholder="Количество мест" 
+        value={formData.total_seats} 
+        onChange={handleChange}
+      />
+      
       <br /><br />
 
       <textarea

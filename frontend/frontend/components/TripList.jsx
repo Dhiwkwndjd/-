@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 function TripList({ trips, loadTrips }) {
-  const current = JSON.parse(localStorage.getItem("user") || "{}");  
-  const role = current?.role;
+  const current = JSON.parse(localStorage.getItem("user") || "{}");  const role = current?.role;
   if (trips.length === 0) {
     return <p>Поездки не найдены</p>;
   }

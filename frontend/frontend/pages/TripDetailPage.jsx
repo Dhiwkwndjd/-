@@ -1,52 +1,40 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useParams} from "react-router-dom";
+import {useEffect,useState} from "react";
 import api from "../src/services/api";
-import {MoveRight} from "lucide-react"
+import { MoveRight } from "lucide-react";
 
-function TripDetailPage() {
-  const { id } = useParams();
-  const [trip, setTrip] = useState(null);
+export default function TripDetailPage(){
+  const {id}=useParams(); 
+  const [trip,setTrip]=useState(null);
+  useEffect(
+    ()=>{api.get(`/trips/${id}/`)
+    .then(r=>setTrip(r.data))},
+    [id]);
 
-  useEffect(() => {
-    api
-      .get(`/trips/${id}/`)
-      .then((response) => {
-        setTrip(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [id]);
-
-  const book = () => api.post("/trips/book/", {trip_id: id}).then(()=>alert("Место забронировано")).catch(e=>alert(e.response?.data?.error || "Ошибка"));
-
-  if (!trip) {
-    return <h2>Загрузка...</h2>;
-  }
-
-  return (
-    <div>
-      <h2>
-        {trip.departure_city} <MoveRight/>
-        {" "}
-        {trip.destination_city}
-      </h2>
-
-      <p>
-        <strong>Дата:</strong>
-        {" "}
-        {trip.trip_date}
-      </p>
-
-      <p>
-        <strong>Описание:</strong>
-      </p>
-
-      <p>{trip.description}</p>
-      <p>Места: {trip.free_seats}/{trip.total_seats}</p>
-      <button onClick={book}>Забронировать</button>
-    </div>
-  );
+  if(!trip) return ( 
+    <h2>Загрузка...</h2>
+  )
+  const book=()=>
+    api.post("/trips/book/",{trip_id:id})
+  .then(()=>alert("Забронировано"));
+  
+  const finish=()=>
+    api.post(`/trips/${id}/finish/`)
+  .then(()=>setTrip({...trip,is_finished:true}));
+ return ( 
+  <div className="card">
+    <h2> {trip.departure_city} <MoveRight/> {trip.destination_city}</h2>
+    <p> Дата: {trip.trip_date} </p>
+    <p> Время: {trip.trip_time} </p>
+    <p> Цена: {trip.price} ₸ </p>
+    <p> Места: {trip.free_seats} / {trip.total_seats} </p>
+    <p> Описание: {trip.description} </p>
+    <p> Статус: {
+      trip.is_finished ? "Завершена" : "Активна"
+    }
+    </p>
+    {!trip.is_finished&&<button onClick={book}>Забронировать</button>}
+    <button onClick={finish}>Завершить поездку</button>
+ </div>
+ )
 }
-
-export default TripDetailPage;

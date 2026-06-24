@@ -60,6 +60,26 @@ class DeliveryRequestApiView(APIView):
         return Response(serializer.errors, status=400)
 
 
+class FinishTripApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, pk):
+        trip = get_object_or_404(
+            Trip,
+            pk=pk
+        )
+
+        if trip.user != request.user:
+            return Response(
+                {"message": "Это не ваша поездка"},
+                status=403
+            )
+
+        trip.is_finished = True
+        trip.save()
+
+        return Response({"message": "Поездка завершена"})
+
+
 class TripDetailApiView(APIView):
     def get(self, request, pk):
         return Response(TripSerializer(get_object_or_404(Trip, pk=pk)).data)

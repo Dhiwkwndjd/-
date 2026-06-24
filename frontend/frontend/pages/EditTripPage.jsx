@@ -19,6 +19,9 @@ function EditTripPage() {
     departure_city: "",
     destination_city: "",
     trip_date: "",
+    trip_time: "",
+    price: "",
+    total_seats: 3,
     description: "",
   });
 
@@ -48,7 +51,11 @@ function EditTripPage() {
     try {
       await api.put(
         `/trips/${id}/`,
-        form
+        {
+          ...form,
+          free_seats:
+            form.total_seats,
+        }
       );
 
       localStorage.removeItem(
@@ -69,6 +76,7 @@ function EditTripPage() {
 
       <input
         type="text"
+        placeholder="Откуда"
         value={form.departure_city}
         onChange={(e) =>
           setForm({
@@ -79,11 +87,11 @@ function EditTripPage() {
         }
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <input
         type="text"
+        placeholder="Куда"
         value={form.destination_city}
         onChange={(e) =>
           setForm({
@@ -94,8 +102,7 @@ function EditTripPage() {
         }
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <input
         type="date"
@@ -109,10 +116,54 @@ function EditTripPage() {
         }
       />
 
-      <br />
-      <br />
+      <br /><br />
+
+      <input
+        type="time"
+        value={form.trip_time}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            trip_time:
+              e.target.value,
+          })
+        }
+      />
+
+      <br /><br />
+
+      <input
+        type="number"
+        placeholder="Цена"
+        value={form.price}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            price:
+              e.target.value,
+          })
+        }
+      />
+
+      <br /><br />
+
+      <input
+        type="number"
+        placeholder="Количество мест"
+        value={form.total_seats}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            total_seats:
+              e.target.value,
+          })
+        }
+      />
+
+      <br /><br />
 
       <textarea
+        placeholder="Описание"
         value={form.description}
         onChange={(e) =>
           setForm({
@@ -123,8 +174,7 @@ function EditTripPage() {
         }
       />
 
-      <br />
-      <br />
+      <br /><br />
 
       <button type="submit">
         Сохранить

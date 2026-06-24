@@ -1,30 +1,59 @@
-import {useEffect,useState} from 'react';
-import api from '../src/services/api';
-import { MoveRight } from "lucide-react";
-function ProfilePage(){
-    const [user,setUser]=useState(null);
-    const [trips,setTrips]=useState([]);
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../src/services/api";
 
-    const logout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
+function ProfilePage() {
+  const navigate = useNavigate();
 
-    window.location.href = "/login";
-    };
+  const [user, setUser] =
+    useState(null);
 
-    useEffect(()=>{
-        api.get('register/').then(r=>setUser(r.data));
-        api.get('my-trips/').then(r=>setTrips(r.data));
-    },[]);
-    return (
-        <div><h2>Личный кабинет</h2>{user&&<>
-        <p>Логин: {user.username}</p><p>Email: {user.email}</p><p>Телефон: {user.phone_number}</p></>}
-        <h3>Мои поездки</h3>{trips.map(trip=><div key={trip.id}>{trip.departure_city} <MoveRight/> {trip.destination_city}</div>)}
-        <button onClick={logout}>
-          Выйти
-        </button>
-        </div>
-        
-    )   
+  useEffect(() => {
+    api
+      .get("profile/")
+      .then((res) =>
+        setUser(res.data)
+      )
+      .catch(console.log);
+  }, []);
+
+  if (!user) {
+    return <h2>Загрузка...</h2>;
+  }
+
+  return (
+    <div>
+      <h1>Профиль</h1>
+
+      <p>
+        Логин:
+        {" "}
+        {user.username}
+      </p>
+
+      <p>
+        Email:
+        {" "}
+        {user.email}
+      </p>
+
+      <p>
+        Телефон:
+        {" "}
+        {user.phone_number}
+      </p>
+
+      <button
+        onClick={() =>
+          navigate(
+            "/profile/edit"
+          )
+        }
+      >
+        Изменить профиль
+      </button>
+    </div>
+  );
 }
+
 export default ProfilePage;

@@ -13,6 +13,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
             "email",
             "phone_number",
             "role",
+            "bio",
             "password",
             "password_2"
         ]
@@ -40,3 +41,14 @@ class CustomerUserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerUser
+        fields = [
+            "id",
+            "username",
+            "email",
+            "phone_number",
+        ]

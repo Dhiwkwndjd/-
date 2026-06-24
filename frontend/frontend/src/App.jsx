@@ -9,6 +9,7 @@ import AuthLayout from '../pages/layouts/AuthLayout';
 import MainLayout from '../pages/layouts/MainLayout';
 import RequireAuth from '../pages/Require/RequireAuth';
 import MyApplicationsPage from '../pages/MyApplicationsPage';
+import ProfileEditPage from "../pages/ProfileEditPage";
 
   function App(){
     return (
@@ -18,6 +19,7 @@ import MyApplicationsPage from '../pages/MyApplicationsPage';
             <Route element={<MainLayout/>}>
             <Route path='/' element={<RequireAuth><HomePage/></RequireAuth>}/>
             <Route path='/profile' element={<RequireAuth><ProfilePage/></RequireAuth>}/>
+            <Route path="/profile/edit"element={<RequireAuth><ProfileEditPage /></RequireAuth>}/>
             <Route path='/applications' element={<RequireAuth><MyApplicationsPage/></RequireAuth>}/>
             <Route path='/trip/:id' element={<RequireAuth><TripDetailPage/></RequireAuth>}/>
             <Route path='/trip/edit/:id' element={<RequireAuth><EditTripPage/></RequireAuth>}/></Route>
