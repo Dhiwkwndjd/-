@@ -1,5 +1,5 @@
-from .models import Trip, DeliveryRequest,  Booking
-from .serializers import TripSerializer, DeliveryRequestSerializer, BookingSerializer
+from .models import Trip, DeliveryRequest,  Booking, Comment
+from .serializers import TripSerializer, DeliveryRequestSerializer, BookingSerializer, CommentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 
 class TripApiView(APIView):
     def get(self, request):
-        return Response(TripSerializer(Trip.objects.all(), many=True).data)
+        return Response(TripSerializer(Trip.objects.filter(is_finished=False), many=True).data)
 
     def post(self, request):
         if request.user.role != "driver":
@@ -29,7 +29,29 @@ class MyTripsApiView(APIView):
 class MyBookingsApiView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self, request):
-        return Response(BookingSerializer(Booking.objects.filter(user=request.user), many=True).data)
+        bookings = Booking.objects.filter(user=request.user)
+        data = []
+
+        for booking in bookings:
+
+            trip = booking.trip
+
+            data.append({
+                "booking_id": booking.id,
+                "trip_id": trip.id,
+                "route": f"{trip.departure_city} -> {trip.destination_city}",
+                "trip_date": trip.trip_date,
+                "trip_time": trip.trip_time,
+                "price": trip.price,
+                "driver": trip.user.username,
+                "phone": trip.user.phone_number,
+                "free_seats": trip.free_seats,
+                "total_seats": trip.total_seats,
+                "description": trip.description,
+                "is_finished": trip.is_finished
+            })
+
+        return Response(data)
 
 
 class BookingApiView(APIView):
@@ -100,3 +122,26 @@ class TripDetailApiView(APIView):
             return Response({"error":"Нет доступа"}, status=403)
         trip.delete()
         return Response(status=204)
+
+
+class TripCommentsApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        comments = Comment.objects.filter(trip_id=pk).order_by("created_at")
+        return Response(CommentSerializer(comments, many=True).data)
+
+    def post(self, request, pk):
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            serializer.save( user=request.user, trip_id=pk)
+            return Response(serializer.data, status=201)
+
+        print("ERRORS:", serializer.errors)
+
+        return Response(
+            serializer.errors,
+            status=400
+        )

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Trip, DeliveryRequest, Booking
+from .models import Trip, DeliveryRequest, Booking, Comment
 
 class TripSerializer(serializers.ModelSerializer):
     owner = serializers.CharField(source="user.username", read_only=True)
@@ -25,3 +25,26 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['user']
 
+class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        source="user.username",
+        read_only=True
+    )
+
+    class Meta:
+        model = Comment
+        fields = [
+            "id",
+            "trip",
+            "user",
+            "username",
+            "parent",
+            "text",
+            "created_at"
+        ]
+
+        read_only_fields = [
+            "user",
+            "trip",
+            "created_at"
+        ]

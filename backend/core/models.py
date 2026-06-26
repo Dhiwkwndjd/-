@@ -18,12 +18,6 @@ class Trip(models.Model):
         return (f"{self.departure_city} -> {self.destination_city}"
     )
 
-class TripComment(models.Model):
-    trip=models.ForeignKey(Trip,on_delete=models.CASCADE,related_name="comments")
-    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    text=models.TextField()
-    created_at=models.DateTimeField(auto_now_add=True)
-
 class DeliveryRequest(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     pickup_city=models.CharField(max_length=100)
@@ -35,3 +29,12 @@ class Booking(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     trip=models.ForeignKey(Trip,on_delete=models.CASCADE,related_name="bookings")
     seats=models.PositiveIntegerField(default=1)
+
+class Comment(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies")
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.text[:30]
