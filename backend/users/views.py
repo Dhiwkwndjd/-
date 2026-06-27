@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny 
 from .serializers import CustomerUserSerializer, ProfileSerializer
+from django.db.models import Avg
+from core.models import Rating
 
 
 class UserApiView(APIView):
@@ -47,27 +49,23 @@ class ProfileApiView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = ProfileSerializer(
-            request.user
+        serializer = ProfileSerializer(request.user)
+        data = serializer.data
+        rating = Rating.objects.filter(to_user=request.user).aggregate(average=Avg("stars"))
+        data["rating"] = (round(rating["average"], 1)
+            if rating["average"] is not None
+                else 0
         )
 
-        return Response(serializer.data)
+        data["ratings_count"] = Rating.objects.filter(to_user=request.user).count()
+
+        return Response(data)
 
     def put(self, request):
-        serializer = ProfileSerializer(
-            request.user,
-            data=request.data,
-            partial=True
-        )
-
+        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            
+            return Response(serializer.data)
 
-            return Response(
-                serializer.data
-            )
-
-        return Response(
-            serializer.errors,
-            status=400
-        )
+        return Response(serializer.errors, status=400)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import CustomerUser
+from django.db.models import Avg
 
 
 class CustomerUserSerializer(serializers.ModelSerializer):
@@ -42,8 +43,12 @@ class CustomerUserSerializer(serializers.ModelSerializer):
 
         return user
     
+    
 
 class ProfileSerializer(serializers.ModelSerializer):
+    average_rating = serializers.SerializerMethodField()
+    ratings_count = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomerUser
         fields = [
@@ -51,4 +56,28 @@ class ProfileSerializer(serializers.ModelSerializer):
             "username",
             "email",
             "phone_number",
+            "role",
+            "bio",
+            "average_rating",
+            "ratings_count",
         ]
+
+    def get_average_rating(self, obj):
+        if obj.role != "driver":
+            return None
+
+        ratings = obj.received_ratings.all()
+
+        if not ratings.exists():
+            return 0
+
+        return round(
+            ratings.aggregate(Avg("stars"))["stars__avg"],
+            1,
+        )
+
+    def get_ratings_count(self, obj):
+        if obj.role != "driver":
+            return 0
+
+        return obj.received_ratings.count()

@@ -1,19 +1,20 @@
-import "./SearchBar.css";
+import { Search } from "lucide-react";
+import "./SearchBar.css"
 
-function SearchBar({ search, setSearch }) {
-  return (
-    <div className="search-container">
-      <h2>Поиск поездок</h2>
+export default function SearchBar({ search, setSearch }) {
+    return (
+        <div className="search-container">
+            <div className="search-box">
+                <Search className="search-icon" size={24} />
 
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Введите город..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-    </div>
-  );
+                <input
+                  className="search-input"
+                  type="text"
+                  placeholder="Введите город..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
+        </div>
+    );
 }
-
-export default SearchBar;

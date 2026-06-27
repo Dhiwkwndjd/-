@@ -1,0 +1,164 @@
+.chat-page {
+    max-width: 900px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
+}
+
+.chat-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    background: #ece5dd;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.1);
+}
+
+.my-message {
+    align-self: flex-end;
+    background: #dcf8c6;
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 15px 15px 4px 15px;
+    word-break: break-word;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+.other-message {
+    align-self: flex-start;
+    background: white;
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 15px 15px 15px 4px;
+    word-break: break-word;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+.username {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 5px;
+}
+
+.text {
+    font-size: 16px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.time {
+    text-align: right;
+    font-size: 11px;
+    color: gray;
+    margin-top: 6px;
+}
+
+.chat-form {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.chat-form input {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 15px;
+}
+
+.chat-form input:focus {
+    border-color: #2563eb;
+}
+
+.chat-form button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.chat-form button:hover {
+    background: #1d4ed8;
+}
+
+.chat-form button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.empty-chat {
+    text-align: center;
+    color: gray;
+    margin-top: 30px;
+    font-size: 17px;
+}
+
+.typing{
+    margin-top:10px;
+    padding:8px 14px;
+    align-self:flex-start;
+
+    background:white;
+    border-radius:15px 15px 15px 4px;
+
+    color:#64748b;
+    font-size:14px;
+    font-style:italic;
+
+    box-shadow:0 2px 5px rgba(0,0,0,.08);
+
+    animation:typingFade .8s infinite alternate;
+}
+
+.typing::after{
+    content:"...";
+    animation:dots 1.5s infinite;
+}
+
+@keyframes typingFade{
+
+    from{
+        opacity:.55;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+@keyframes dots{
+
+    0%{
+        content:".";
+    }
+
+    33%{
+        content:"..";
+    }
+
+    66%{
+        content:"...";
+    }
+
+    100%{
+        content:".";
+    }
+
+}

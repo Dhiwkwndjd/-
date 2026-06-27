@@ -41,27 +41,14 @@ function RegisterForm() {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Регистрация</h2>
-
       <input type="text" name="username" placeholder="Логин" onChange={handleChange}/>
-
       <input type="email" name="email" placeholder="Email" onChange={handleChange}/>
-
       <input type="text" name="phone_number" placeholder="Телефон" onChange={handleChange}/>
-
       <select name="role" onChange={handleChange}><option value="passenger">Пассажир</option><option value="driver">Водитель</option></select>
-
       <input type="password" name="password" placeholder="Пароль" onChange={handleChange}/>
-
       <input type="password" name="password_2" placeholder="Повторите пароль" onChange={handleChange}/>
-
-      <button type="submit">
-        Зарегистрироваться
-      </button>
-
-      <p>
-        Уже есть аккаунт?{" "}
-        <Link to="/login"> Войти</Link>
-      </p>
+      <button type="submit">Зарегистрироваться</button>
+      <p> Уже есть аккаунт? <Link to="/login"> Войти</Link></p>
     </form>
   );
 }

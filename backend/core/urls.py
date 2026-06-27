@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TripApiView, DeliveryRequestApiView, TripDetailApiView, FinishTripApiView, MyTripsApiView, BookingApiView, MyBookingsApiView, TripCommentsApiView
+from .views import TripApiView, DeliveryRequestApiView, TripDetailApiView, FinishTripApiView, MyTripsApiView, BookingApiView, MyBookingsApiView, TripChatApiView, TripRatingApiView
 
 urlpatterns = [
     path('trips/', TripApiView.as_view()),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('requests/', DeliveryRequestApiView.as_view()),
     path('my-trips/', MyTripsApiView.as_view()),
     path('my-bookings/', MyBookingsApiView.as_view()),
-    path('trips/<int:pk>/comments/',TripCommentsApiView.as_view()),
+    path("trips/<int:pk>/chat/", TripChatApiView.as_view()),
+    path("trips/<int:pk>/rate/", TripRatingApiView.as_view()),
 ]

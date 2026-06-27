@@ -1,29 +1,28 @@
-.profile-page {
-  max-width: 1000px;
-  margin: 40px auto;
+.profile-page{
+  display:flex;
+  justify-content:center;
+  margin-top:40px;
+
 }
 
-.profile-card {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+.profile-card{
+  width:500px;
+  background:white;
+  border-radius:15px;
+  padding:30px;
+  box-shadow:0 5px 20px rgba(0,0,0,.1);
 }
 
-.profile-title {
-  margin-bottom: 20px;
-  color: #1e293b;
+.profile-card h1{
+  margin-bottom:25px;
 }
 
-.profile-info {
-  margin-bottom: 10px;
-  font-size: 17px;
+.profile-card p{
+  margin:12px 0;
+  font-size:18px;
 }
 
-.profile-trips {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+.profile-card button{
+  width:100%;
+  margin-top:15px;
 }

@@ -42,25 +42,27 @@ function LoginForm() {
   };
 
   return (
-    <div>
-      <h2>Вход</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1>Вход</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="username" placeholder="Логин" value={formData.username} onChange={handleChange} />
-        <br /><br />
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <input type="text" name="username" placeholder="Логин" value={formData.username} onChange={handleChange} />
+          <br /><br />
 
-        <input type="password" name="password" placeholder="Пароль" value={formData.password} onChange={handleChange} />
-        <br /> <br />
+          <input type="password" name="password" placeholder="Пароль" value={formData.password} onChange={handleChange} />
+          <br /> <br />
 
-        <button type="submit"> Войти </button>
-      </form>
+          <button type="submit"> Войти </button>
+        </form>
 
-      <p>
-        Нет аккаунта?{" "}
-        <Link to="/register">
-          Зарегистрироваться
-        </Link>
-      </p>
+        <p className="auth-link">
+          Нет аккаунта?{" "}
+          <Link to="/register">
+            Зарегистрироваться
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

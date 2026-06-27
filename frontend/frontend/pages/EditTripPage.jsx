@@ -51,16 +51,10 @@ function EditTripPage() {
     try {
       await api.put(
         `/trips/${id}/`,
-        {
-          ...form,
-          free_seats:
-            form.total_seats,
-        }
+        {...form, free_seats: form.total_seats,}
       );
 
-      localStorage.removeItem(
-        "editingTrip"
-      );
+      localStorage.removeItem("editingTrip");
 
       navigate("/");
     } catch (error) {
@@ -70,9 +64,7 @@ function EditTripPage() {
 
   return (
     <form onSubmit={submit}>
-      <h2>
-        Редактирование поездки
-      </h2>
+      <h2> Редактирование поездки</h2>
 
       <input
         type="text"
