@@ -5,7 +5,7 @@ import "./TripChatPage.css";
 
 export default function TripChatPage() {
     const { id } = useParams();
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
     const [typingUser, setTypingUser] = useState("");

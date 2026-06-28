@@ -18,39 +18,43 @@ api.interceptors.response.use(
   (response) => response,
 
   async (error) => {
+    console.log("INTERCEPTOR");
+    console.log(error.response?.status);
+
     const originalRequest = error.config;
 
     if (
       error.response?.status === 401 &&
       !originalRequest._retry
     ) {
+      console.log("REFRESH TOKEN");
+
       originalRequest._retry = true;
 
       try {
-        const refresh = localStorage.getItem(
-          "refresh"
-        );
+        const refresh = localStorage.getItem("refresh");
 
         const response = await axios.post(
           "http://127.0.0.1:8000/api/token/refresh/",
-          {
-            refresh,
-          }
+          { refresh }
         );
 
-        localStorage.setItem(
-          "access",
-          response.data.access
-        );
+        console.log("NEW ACCESS", response.data.access);
+
+        localStorage.setItem("access", response.data.access);
 
         originalRequest.headers.Authorization =
-          `Bearer ${response.data.access}`;
+  `Bearer ${response.data.access}`;
 
-        return api(originalRequest);
+console.log("RETRY HEADERS:", originalRequest.headers);
+
+return api(originalRequest);
+
       } catch (err) {
+        console.log("REFRESH ERROR", err.response?.data);
+
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
-
         window.location.href = "/login";
 
         return Promise.reject(err);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import api from "../src/services/api";
 import TripForm from "../components/TripForm";
 import SearchBar from "../components/SearchBar";
@@ -24,7 +25,14 @@ function HomePage() {
           });
     };
 
-    useEffect(() => {loadTrips();}, [page]);
+    useEffect(() => {
+      const token = localStorage.getItem("access");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+        loadTrips();
+      }, [page]);
 
     const filteredTrips = trips.filter((trip) =>
         `${trip.departure_city} ${trip.destination_city}`
@@ -36,12 +44,10 @@ function HomePage() {
         <div className="home-page">
             {role === "driver" && (<TripForm onTripAdded={loadTrips}/>)}
             <SearchBar search={search} setSearch={setSearch}/>
-            <TripList trips={filteredTrips} onTripDeleted={loadTrips}/>
+            <TripList trips={filteredTrips} loadTrips={loadTrips} />
             <div className="pagination">
               <button disabled={page === 1} onClick={() => setPage(page - 1)}>Назад</button>
-
               <span> Страница {page} из {Math.max(1, Math.ceil(count / 10))}</span>
-
               <button disabled={page >= Math.ceil(count / 10)} onClick={() => setPage(page + 1)}> Вперед </button>
             </div>
         </div>

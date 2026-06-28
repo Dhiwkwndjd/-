@@ -194,9 +194,11 @@ class TripDetailApiView(APIView):
         return Response(serializer.errors,status=400)
 
     def delete(self, request, pk):
-        trip=get_object_or_404(Trip,pk=pk)
-        if trip.user != request.user or request.user.role != "driver":
-            return Response({"error":"Нет доступа"}, status=403)
+        trip = get_object_or_404(Trip, pk=pk)
+        if trip.user != request.user:
+            return Response({"error": "Нет доступа"}, status=403)
+        if request.user.role != "driver":
+            return Response({"error": "Нет доступа"}, status=403)
         trip.delete()
         return Response(status=204)
 
@@ -283,3 +285,4 @@ class TripRatingApiView(APIView):
             return Response(serializer.data, status=201)
 
         return Response(serializer.errors, status=400)
+    

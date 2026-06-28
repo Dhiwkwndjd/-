@@ -26,10 +26,8 @@ function TripForm({ onTripAdded }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const token = localStorage.getItem("access");
 
-    console.log("TOKEN:", token);
 
     if (!token) {
       setError("Сначала войдите в аккаунт");
@@ -59,6 +57,8 @@ function TripForm({ onTripAdded }) {
         departure_city: "",
         destination_city: "",
         trip_date: "",
+        trip_time:"",
+        price:"",
         description: "",
         total_seats: 3,
         free_seats: 3,

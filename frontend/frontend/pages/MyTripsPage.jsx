@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../src/services/api";
-import { MoveRight, Moveleft, Star} from "lucide-react";
+import { MoveRight, MoveLeft, Star} from "lucide-react";
 import "./MyTripsPage.css";
-import {Moveleft} from "lucide-react"
+
 
 export default function MyTripsPage() {
     const [trips, setTrips] = useState({active: [],finished: []});
@@ -85,7 +85,7 @@ export default function MyTripsPage() {
                         disabled={activePage === 1}
                         onClick={() => setActivePage(activePage - 1)}
                     >
-                        <Moveleft />
+                        <MoveLeft />
                     </button>
 
                     <span> {activePage} / {Math.max(1, Math.ceil(trips.active.length / perPage))}</span>
@@ -113,7 +113,7 @@ export default function MyTripsPage() {
                         disabled={finishedPage === 1}
                         onClick={() => setFinishedPage(finishedPage - 1)}
                     >
-                        <Moveleft />
+                        <MoveLeft />
                     </button>
 
                     <span>

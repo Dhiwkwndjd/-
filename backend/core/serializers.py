@@ -3,6 +3,8 @@ from .models import Trip, DeliveryRequest, Booking, TripChatMessage, Rating
 
 class TripSerializer(serializers.ModelSerializer):
     owner = serializers.CharField(source="user.username", read_only=True)
+    owner_username = serializers.CharField(source="user.username", read_only=True)
+    owner_id = serializers.IntegerField(source="user.id", read_only=True)
     owner_phone = serializers.CharField(source="user.phone_number", read_only=True)
 
     def validate_price(self, value):
@@ -18,8 +20,10 @@ class TripSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "user",
             "owner",
+            "owner_username",
+            "owner_id",
             "owner_phone",
-            "free_seats"
+            "free_seats",
         ]
 
 class DeliveryRequestSerializer(serializers.ModelSerializer):
